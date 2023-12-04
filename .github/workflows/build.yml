@@ -61,5 +61,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sing-box_core
+          name: sing-box_android
           path: sing-box
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sing-box_win
+          path: sing-box.exe
