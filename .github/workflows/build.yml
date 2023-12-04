@@ -46,25 +46,15 @@ jobs:
           VERSION=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           CGO_ENABLED=1 CC=${CC} GOARCH=arm64 GOOS=android go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags ${TAGS} ./cmd/sing-box
           CGO_ENABLED=0 GOARCH=amd64 GOOS=windows go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags ${TAGS} ./cmd/sing-box
-
-      # - name: up to channel
-      #   env:
-      #     CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-      #     BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-      #   run: |
-      #     pip install pyTelegramBotAPI
-      #     path="$GITHUB_WORKSPACE/sing-box"
-      #     VERSION=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-      #     CAPTION=$(echo -e "sing-box version ${VERSION}\n\nEnvironment: go1.21.4 android-arm64/windows-amd64\nTags: ${TAGS}\nCGO: enabled")
-      #     python3 $GITHUB_WORKSPACE/.github/scripts/tg_bot.py "$BOT_TOKEN" "$CHANNEL_ID" "$path" "$CAPTION"
-
-      - name: Rename Windows
-        run: mv sing-box.exe sing-box-windows-amd64.exe
-      - name: Rename android
-        run: mv sing-box sing-box-android-arm64
         
-      - name: Upload artifact
+      - name: Upload android
         uses: actions/upload-artifact@v3
         with:
-          name: sing-box_android
-          path: sing-box*
+          name: sing-box-android-arm64
+          path: sing-box
+
+      - name: Upload windows
+        uses: actions/upload-artifact@v3
+        with:
+          name: sing-box-windows-amd64
+          path: sing-box.exe
