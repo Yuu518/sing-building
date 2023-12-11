@@ -17,8 +17,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          repository: jasmoli/sing-box
-          ref: dev-next-xireiki
+          repository: PuerNya/sing-box
+          ref: building
 
 
       - name: Get latest go version
