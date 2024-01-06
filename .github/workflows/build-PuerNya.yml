@@ -1,6 +1,7 @@
-name: Build Core
+name: Build Core-PuerNya
 
 on:
+  workflow_dispatch:
   push:
 
 jobs:
