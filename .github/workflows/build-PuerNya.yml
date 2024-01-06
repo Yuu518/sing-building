@@ -15,15 +15,7 @@ jobs:
         with:
           fetch-depth: 0
           repository: PuerNya/sing-box
-          ref: building
-
-      - name: get sing-box version
-        id: version
-        run: |
-          git remote add sekai https://github.com/SagerNet/sing-box.git
-          git fetch --tags sekai
-          version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          echo version=$version >> $GITHUB_OUTPUT          
+          ref: building        
 
       - name: Get latest go version
         id: go_version
@@ -34,6 +26,14 @@ jobs:
         uses: actions/setup-go@v4.1.0
         with:
           go-version: 1.21.5
+
+      - name: get sing-box version
+        id: version
+        run: |
+          git remote add sekai https://github.com/SagerNet/sing-box.git
+          git fetch --tags sekai
+          version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
+          echo version=$version >> $GITHUB_OUTPUT
 
       - name: Setup NDK
         uses: nttld/setup-ndk@v1
