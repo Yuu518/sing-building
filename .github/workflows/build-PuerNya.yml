@@ -69,11 +69,11 @@ jobs:
       - name: Upload android
         uses: actions/upload-artifact@v3
         with:
-          name: sing-box-android-arm64
+          name: singBox-android-arm64
           path: singBox
 
       - name: Upload windows
         uses: actions/upload-artifact@v3
         with:
-          name: sing-box-windows-amd64
+          name: singBox-windows-amd64
           path: singBox.exe
