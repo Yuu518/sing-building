@@ -25,18 +25,36 @@ jobs:
         id: go_version
         run: |
           echo go_version=$(curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g') >> $GITHUB_OUTPUT
+      
       - name: Setup Go
         uses: actions/setup-go@v4.1.0
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
+
+      - name: get sing-box version
+        id: version
+        run: |
+          git remote add sekai https://github.com/SagerNet/sing-box.git
+          git fetch --tags sekai
+          version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
+          echo version=$version >> $GITHUB_OUTPUT          
 
       - name: Setup NDK
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
           ndk-version: r26b
-          add-to-path: false
-          local-cache: false
+
+      - name: checkout sing repository
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: PuerNya/sing
+          ref: fix-interface
+          path: sing
+
+      - name: replace sing
+        run: |
+          sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod          
 
       - name: Build core
         env:
