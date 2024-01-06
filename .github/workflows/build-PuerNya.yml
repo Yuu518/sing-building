@@ -60,15 +60,20 @@ jobs:
           VERSION=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           CGO_ENABLED=1 CC=${CC} GOARCH=arm64 GOOS=android go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags ${TAGS} ./cmd/sing-box
           CGO_ENABLED=0 GOARCH=amd64 GOOS=windows go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags ${TAGS} ./cmd/sing-box
+
+      - name: Rename file
+        run: |
+            mv sing-box singBox
+            mv sing-box.exe singBox.exe
         
       - name: Upload android
         uses: actions/upload-artifact@v3
         with:
           name: sing-box-android-arm64
-          path: sing-box
+          path: singBox
 
       - name: Upload windows
         uses: actions/upload-artifact@v3
         with:
           name: sing-box-windows-amd64
-          path: sing-box.exe
+          path: singBox.exe
